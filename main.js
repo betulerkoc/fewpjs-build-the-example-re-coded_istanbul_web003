@@ -4,7 +4,35 @@ const FULL_HEART = '♥'
 
 // Your JavaScript code goes here!
 
+const articleHearts = document.querySelectorAll(".like-glyph");
 
+function likeCallback(e) {
+  let heart = e.target;
+  mimicServerCall()
+    .then(function(){
+      if(!heart.classList.contains("activated-heart")) {
+        heart.classList.add("activated-heart");
+        heart.innerText = FULL_HEART;
+      } else {
+        heart.classList.remove("activated-heart");
+        heart.innerText = EMPTY_HEART;
+      }
+     
+    })
+    .catch(function(error) {
+      const errorModal = document.getElementById("modal");
+      errorModal.classList.remove("hidden");
+      errorModal.innerHTML = error;
+      setTimeout(function(){ 
+        errorModal.classList.add("hidden");
+       }, 3000);
+        
+    });
+}
+
+for (let glyph of articleHearts) {
+  glyph.addEventListener("click", likeCallback);
+}
 
 
 //------------------------------------------------------------------------------
